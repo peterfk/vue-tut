@@ -1,36 +1,59 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
+import { ref, reactive, computed } from 'vue'
 
-console.log("test!!!")
+console.log("test!")
+
+const count = ref(0)
+
+const state = reactive({ count: 0 })
+console.log(state)
+
+console.log(count) // { value: 0 }
+console.log(count.value) // 0
+
+count.value++
+console.log(count.value) // 1
+
+function increment() {
+  count.value++
+}
+
+const author = reactive({
+  name: 'John Doe',
+  books: [
+    'Vue 2 - Advanced Guide',
+    'Vue 3 - Basic Guide',
+    'Vue 4 - The Mystery'
+  ]
+})
+
+// a computed ref
+const publishedBooksMessage = computed(() => {
+  return author.books.length > 0 ? 'Yes' : 'No'
+})
 
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!!!!" />
-    </div>
-  </header>
-
-  <main>
-    <TheWelcome />
-  </main>
+  <button @click="increment">
+    {{ count }}
+  </button>
+  <br>
+  <p>Has published books:</p>
+  <span>{{ publishedBooksMessage }}</span>
 </template>
 
 <style scoped>
-header {
+/* header {
   line-height: 1.5;
 }
 
 .logo {
   display: block;
   margin: 0 auto 2rem;
-}
+} */
 
-@media (min-width: 1024px) {
+/* @media (min-width: 1024px) {
   header {
     display: flex;
     place-items: center;
@@ -46,5 +69,5 @@ header {
     place-items: flex-start;
     flex-wrap: wrap;
   }
-}
+} */
 </style>
