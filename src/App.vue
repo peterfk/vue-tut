@@ -32,6 +32,12 @@ const publishedBooksMessage = computed(() => {
   return author.books.length > 0 ? 'Yes' : 'No'
 })
 
+const isActive = ref(false)
+const hasError = ref(true)
+
+const activeClass = ref('active')
+const errorClass = ref('text-danger')
+
 </script>
 
 <template>
@@ -41,6 +47,13 @@ const publishedBooksMessage = computed(() => {
   <br>
   <p>Has published books:</p>
   <span>{{ publishedBooksMessage }}</span>
+
+  <div class="static" :class="{ active: isActive, 'text-danger': hasError }"></div>
+
+  <div :class="[activeClass, errorClass]"></div>
+
+  <div :class="[{ [activeClass]: isActive }, errorClass]"></div>
+
 </template>
 
 <style scoped>
