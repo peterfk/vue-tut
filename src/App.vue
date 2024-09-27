@@ -38,6 +38,8 @@ const hasError = ref(true)
 const activeClass = ref('active')
 const errorClass = ref('text-danger')
 
+var awesome = ref(true)
+
 </script>
 
 <template>
@@ -53,6 +55,20 @@ const errorClass = ref('text-danger')
   <div :class="[activeClass, errorClass]"></div>
 
   <div :class="[{ [activeClass]: isActive }, errorClass]"></div>
+
+  <h1 v-if="true">Vue is awesome!</h1>
+
+
+  <button @click="awesome = !awesome">Toggle</button>
+
+  <h1 v-if="awesome">Vue is awesome!</h1>
+  <h1 v-else>Oh no 😢</h1>
+
+  <template v-if="true">
+    <h1>Title</h1>
+    <p>Paragraph 1</p>
+    <p>Paragraph 2</p>
+  </template>
 
 </template>
 
