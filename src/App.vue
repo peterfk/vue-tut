@@ -25,6 +25,8 @@ function warn(message, event) {
     alert(message)
 }
 
+const message2 = ref('')
+
 </script>
 
 <template>
@@ -47,5 +49,10 @@ function warn(message, event) {
     <button @click="(event) => warn('Form cannot be submitted yet.', event)">
         Submit
     </button>
+    <p></p>
+    <input v-model="text">
+
+    <p>Message is: {{ message2 }}</p>
+    <input v-model="message2" placeholder="edit me" />
 
 </template>
