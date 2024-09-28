@@ -40,6 +40,21 @@ const errorClass = ref('text-danger')
 
 var awesome = ref(true)
 
+const parentMessage = ref('Parent')
+const items = ref([{ message: 'Foo' }, { message: 'Bar' }])
+
+items.value.forEach((item, index) => {
+  // has access to outer scope `parentMessage`
+  // but `item` and `index` are only available in here
+  console.log(parentMessage.value, item.message, index)
+})
+
+const myObject = reactive({
+  title: 'How to do lists in Vue',
+  author: 'Jane Doe',
+  publishedAt: '2016-04-10'
+})
+
 </script>
 
 <template>
@@ -69,6 +84,24 @@ var awesome = ref(true)
     <p>Paragraph 1</p>
     <p>Paragraph 2</p>
   </template>
+
+  <li v-for="item in items">
+    {{ item.message }}
+  </li>
+
+  <li v-for="(item, index) in items">
+    {{ parentMessage }} - {{ index }} - {{ item.message }}
+  </li>
+
+  <ul>
+    <li v-for="value in myObject">
+      {{ value }}
+    </li>
+  </ul>
+
+  <li v-for="(value, key, index) in myObject">
+    {{ index }}. {{ key }}: {{ value }}
+  </li>
 
 </template>
 
