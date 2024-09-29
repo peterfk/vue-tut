@@ -1,5 +1,5 @@
 <script setup>
-import { ref, reactive, computed } from 'vue'
+import { ref, reactive, computed, onMounted, watch } from 'vue'
 
 const count = ref(0)
 
@@ -27,9 +27,39 @@ function warn(message, event) {
 
 const message2 = ref('')
 
+onMounted(() => {
+    console.log(`the component is now mounted.`)
+})
+
+const question = ref('')
+const answer = ref('Questions usually contain a question mark. ;-)')
+const loading = ref(false)
+
+// watch works directly on a ref
+watch(question, async (newQuestion, oldQuestion) => {
+    if (newQuestion.includes('?')) {
+        loading.value = true
+        answer.value = 'Thinking...'
+        try {
+            const res = await fetch('https://yesno.wtf/api')
+            answer.value = (await res.json()).answer
+        } catch (error) {
+            answer.value = 'Error! Could not reach the API. ' + error
+        } finally {
+            loading.value = false
+        }
+    }
+})
+
 </script>
 
 <template>
+
+    <p>
+        Ask a yes/no question:
+        <input v-model="question" :disabled="loading" />
+    </p>
+    <p>{{ answer }}</p>
 
     <button @click="count++">Add 1</button>
     <p>Count is: {{ count }}</p>
@@ -54,5 +84,7 @@ const message2 = ref('')
 
     <p>Message is: {{ message2 }}</p>
     <input v-model="message2" placeholder="edit me" />
+
+
 
 </template>
