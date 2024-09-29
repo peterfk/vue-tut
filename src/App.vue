@@ -1,90 +1,34 @@
 <script setup>
-import { ref, reactive, computed, onMounted, watch } from 'vue'
+import { ref, reactive, computed } from 'vue'
+import ButtonCounter from './ButtonCounter.vue'
+import BlogPost from './BlogPost.vue';
+import AlertBox from './AlertBox.vue'
 
-const count = ref(0)
+const posts = ref([
+    { id: 1, title: 'My journey with Vue' },
+    { id: 2, title: 'Blogging with Vue' },
+    { id: 3, title: 'Why Vue is so fun' }
+])
 
-const name = ref('Vue.js')
-
-function greet(event) {
-    alert(`Hello ${name.value}!`)
-    // `event` is the native DOM event
-    if (event) {
-        alert(event.target.tagName)
-    }
-}
-
-function say(message) {
-    alert(message)
-}
-
-function warn(message, event) {
-    // now we have access to the native event
-    if (event) {
-        event.preventDefault()
-    }
-    alert(message)
-}
-
-const message2 = ref('')
-
-onMounted(() => {
-    console.log(`the component is now mounted.`)
-})
-
-const question = ref('')
-const answer = ref('Questions usually contain a question mark. ;-)')
-const loading = ref(false)
-
-// watch works directly on a ref
-watch(question, async (newQuestion, oldQuestion) => {
-    if (newQuestion.includes('?')) {
-        loading.value = true
-        answer.value = 'Thinking...'
-        try {
-            const res = await fetch('https://yesno.wtf/api')
-            answer.value = (await res.json()).answer
-        } catch (error) {
-            answer.value = 'Error! Could not reach the API. ' + error
-        } finally {
-            loading.value = false
-        }
-    }
-})
+const postFontSize = ref(1)
 
 </script>
 
 <template>
+    <h1>Here is a child component!</h1>
+    <ButtonCounter />
 
-    <p>
-        Ask a yes/no question:
-        <input v-model="question" :disabled="loading" />
-    </p>
-    <p>{{ answer }}</p>
+    <h1>Here are many child components!</h1>
+    <ButtonCounter />
+    <ButtonCounter />
+    <ButtonCounter />
 
-    <button @click="count++">Add 1</button>
-    <p>Count is: {{ count }}</p>
+    <div :style="{ fontSize: postFontSize + 'em' }">
+        <BlogPost v-for="post in posts" :key="post.id" :title="post.title" @enlarge-text="postFontSize += 0.1" />
+    </div>
 
-    <!-- `greet` is the name of the method defined above -->
-    <button @click="greet">Greet</button>
-
-    <button @click="say('hello')">Say hello</button>
-    <button @click="say('bye')">Say bye</button>
-    <p></p>
-    <!-- using $event special variable -->
-    <button @click="warn('Form cannot be submitted yet.', $event)">
-        Submit
-    </button>
-
-    <!-- using inline arrow function -->
-    <button @click="(event) => warn('Form cannot be submitted yet.', event)">
-        Submit
-    </button>
-    <p></p>
-    <input v-model="text">
-
-    <p>Message is: {{ message2 }}</p>
-    <input v-model="message2" placeholder="edit me" />
-
-
+    <AlertBox>
+        Something bad happened.
+    </AlertBox>
 
 </template>
